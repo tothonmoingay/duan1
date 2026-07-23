@@ -1,0 +1,161 @@
+/* --- 1. Reset CSS & Biến dùng chung --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --bg-color: #FAF9F6; /* Màu nền trắng kem ấm áp, đỡ mỏi mắt */
+    --card-bg: #FFFFFF; /* Màu nền thẻ bài viết */
+    --text-main: #2D3748; /* Màu chữ chính xám đậm dễ đọc */
+    --text-muted: #718096; /* Màu chữ phụ xám nhạt */
+    --accent-color: #4A5568; /* Màu điểm nhấn (nút bấm, logo) */
+    --primary-color: #4F46E5; /* Màu xanh dịu cho nút nổi bật */
+    --border-color: #E2E8F0; /* Màu đường viền */
+    --font-sans: 'Inter', sans-serif; --font-serif: 'Playfair Display', Georgia, serif; }
+body { background-color: var(--bg-color); color: var(--text-main); font-family: var(--font-sans); line-height: 1.6; padding-bottom: 50px; }
+/* --- 2. Thanh điều hướng (Navbar) --- */
+.navbar { background-color: var(--card-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+.nav-container { max-width: 1000px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 600; text-decoration: none; color: var(--text-main); }
+.logo span { color: var(--primary-color); }
+/* Nút viết bài mới */
+.btn-primary { background-color: var(--primary-color); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; /* Hiện bàn tay khi rê chuột */
+    display: flex; align-items: center; gap: 8px; transition: background 0.2s ease; }
+.btn-primary:hover { background-color: #4338CA; }
+/* --- 3. Bố cục chính --- */
+.main-container { max-width: 1000px; margin: 40px auto 0; padding: 0 20px; }
+.main-header { margin-bottom: 40px; }
+.main-header h1 { font-family: var(--font-serif); font-size: 2.5rem; color: var(--text-main); margin-bottom: 8px; }
+.subtitle { color: var(--text-muted); font-size: 1.1rem; }
+/* --- 4. Thiết kế lưới bài viết (Diary Grid) --- */
+.diary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+.diary-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer; /* HIỆN BÀN TAY CHO TOÀN BỘ THẺ NHẬT KÝ */ }
+.diary-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+.card-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
+.mood { background-color: #EDF2F7; padding: 2px 8px; border-radius: 12px; font-weight: 500; }
+.card-title { font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 12px; color: var(--text-main); }
+.card-preview { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; display: -webkit-box; line-clamp: 2; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
+.card-footer { border-top: 1px dashed var(--border-color); padding-top: 12px; }
+.btn-text { color: var(--primary-color); text-decoration: none; font-size: 0.9rem; font-weight: 500; cursor: pointer; /* HIỆN BÀN TAY CHO CHỮ "Đọc chi tiết" */ }
+.btn-text:hover { text-decoration: underline; }
+/* --- 5. Giao diện Modal Preview (Popup kiểu Facebook) --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); /* Tối nền phía sau */
+    backdrop-filter: blur(4px); /* Làm mờ hậu cảnh */
+    display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease-in-out; }
+.modal-overlay.show { opacity: 1; visibility: visible; }
+.modal-content { background-color: var(--card-bg); width: 90%; max-width: 650px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); position: relative; padding: 35px; transform: translateY(-20px); transition: transform 0.3s ease-in-out; max-height: 85vh; overflow-y: auto; }
+.modal-overlay.show .modal-content { transform: translateY(0); }
+/* Nút Đóng (X) */
+.modal-close { position: absolute; top: 20px; right: 25px; background: none; border: none; font-size: 1.8rem; color: var(--text-muted); cursor: pointer; /* Hiện bàn tay cho nút đóng */
+    transition: color 0.2s; line-height: 1; }
+.modal-close:hover { color: var(--text-main); }
+/* Chi tiết nội dung bên trong modal */
+.modal-meta-row { display: flex; gap: 15px; align-items: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; }
+.modal-mood { background-color: #EDF2F7; padding: 2px 8px; border-radius: 12px; font-weight: 500; color: var(--text-main); }
+.modal-title { font-family: var(--font-serif); font-size: 1.8rem; color: var(--text-main); line-height: 1.3; margin-bottom: 20px; }
+.modal-text { font-family: var(--font-serif); font-size: 1.1rem; color: var(--text-main); line-height: 1.8; }
+.modal-text p { margin-bottom: 15px; }
+.modal-note { font-size: 0.9rem; color: var(--text-muted); margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 15px; }
+/* Thêm/Sửa đổi phần này trong style.css để đồng nhất với Bootstrap */
+.logo { font-family: var(--font-serif); font-weight: 600; text-decoration: none; color: var(--text-main); }
+.logo span { color: var(--primary-color); }
+/* Tinh chỉnh màu nút viết bài mới theo Bootstrap */
+.btn-primary-custom { background-color: var(--primary-color) !important; border-color: var(--primary-color) !important; font-size: 0.9rem; }
+.btn-primary-custom:hover { background-color: #4338CA !important; }
+/* Làm đẹp hơn cho các link menu trên Header */
+.navbar-nav .nav-link { color: var(--text-muted); transition: color 0.2s ease; }
+.navbar-nav .nav-link:hover, 
+.navbar-nav .nav-link.active { color: var(--primary-color) !important; }
+/* Thêm/Sửa đổi phần này trong style.css để đồng nhất với Bootstrap */
+.logo { font-family: var(--font-serif); font-weight: 600; text-decoration: none; color: var(--text-main); }
+.logo span { color: var(--primary-color); }
+/* Tinh chỉnh màu nút viết bài mới theo Bootstrap */
+.btn-primary-custom { background-color: var(--primary-color) !important; border-color: var(--primary-color) !important; font-size: 0.9rem; }
+.btn-primary-custom:hover { background-color: #4338CA !important; }
+/* Làm đẹp hơn cho các link menu trên Header */
+.navbar-nav .nav-link { color: var(--text-muted); transition: color 0.2s ease; }
+.navbar-nav .nav-link:hover, 
+.navbar-nav .nav-link.active { color: var(--primary-color) !important; }
+/* --- Tinh chỉnh thêm cho trang Viết nhật ký (write.html) --- */
+/* Ô input tiêu đề không viền, khi focus không bị bóng xanh mặc định */
+.title-input:focus,
+.content-textarea:focus { outline: none !important; box-shadow: none !important; background-color: transparent !important; }
+/* Tinh chỉnh phần chọn cảm xúc (Mood buttons) */
+.mood-btn { transition: all 0.2s ease-in-out; }
+.mood-btn.active { background-color: var(--primary-color) !important; border-color: var(--primary-color) !important; color: white !important; }
+.mood-btn:hover:not(.active) { background-color: #f3f4f6 !important; border-color: #cbd5e1 !important; }
+/* Khung kéo thả ảnh */
+.image-upload-wrapper { border: 2px dashed #cbd5e1 !important; transition: border-color 0.2s; }
+.image-upload-wrapper:hover { border-color: var(--primary-color) !important; }
+/* Trải nghiệm soạn thảo nội dung */
+.content-textarea { resize: none; /* Khóa không cho người dùng kéo giãn khung textarea */ }
+/* --- Tinh chỉnh ô chọn ngày viết độc đáo --- */
+.custom-date-wrapper { cursor: pointer; }
+.custom-date-card { border-color: #e2e8f0 !important; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+/* Hiệu ứng khi di chuột qua thẻ lịch */
+.custom-date-wrapper:hover .custom-date-card { border-color: var(--primary-color) !important; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08); transform: translateY(-1px); }
+/* Định dạng chữ nhỏ phía trên ngày */
+.fs-7 { font-size: 0.7rem !important; letter-spacing: 0.05em; }
+/* --- TRANG TRÍ BỘ LỊCH TỰ THIẾT KẾ (CUSTOM DATEPICKER) --- */
+.custom-date-trigger { cursor: pointer; border-color: #e2e8f0 !important; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); user-select: none; }
+.custom-date-trigger:hover { border-color: var(--primary-color) !important; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08); transform: translateY(-1px); }
+/* Khung Dropdown chứa bảng lịch */
+.calendar-dropdown { position: absolute; top: 100%; left: 12px; right: 12px; z-index: 1050; margin-top: 8px; width: calc(100% - 24px); min-width: 290px; transform-origin: top center; /* Hiệu ứng Animation bung ra mượt mà */
+    animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+/* Các thứ trong tuần */
+.calendar-weekdays { grid-template-columns: repeat(7, 1fr); font-size: 0.75rem; }
+/* Các ngày trong tháng */
+.calendar-days { grid-template-columns: repeat(7, 1fr); gap: 4px; }
+/* Thiết kế từng nút ngày */
+.calendar-day { font-size: 0.85rem; padding: 8px 0; border-radius: 50%; cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: center; aspect-ratio: 1; transition: all 0.2s ease; }
+.calendar-day:hover:not(.empty):not(.active) { background-color: #f1f5f9; color: var(--primary-color); transform: scale(1.1); }
+/* Ngày rỗng (những ô trống đầu tháng) */
+.calendar-day.empty { cursor: default; background: transparent; }
+/* Ngày hôm nay (nhưng chưa được click chọn) */
+.calendar-day.today { border: 1px solid var(--primary-color); color: var(--primary-color); font-weight: 600; }
+/* Ngày đang được click chọn */
+.calendar-day.active { background-color: var(--primary-color) !important; color: white !important; font-weight: 600; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); animation: pulseSelect 0.25s ease-out; }
+/* Nút chuyển tháng */
+.nav-cal-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; padding: 0; border: none; background-color: #f8fafc; transition: background 0.2s; }
+.nav-cal-btn:hover { background-color: #e2e8f0; }
+/* KEYFRAMES ANIMATION */
+@keyframes slideDownFade {
+ from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+ }
+@keyframes pulseSelect {
+ 0% { transform: scale(0.9); }
+50% { transform: scale(1.15); }
+100% { transform: scale(1); }
+ }
+/* Tinh chỉnh nút dropdown cảm xúc */
+.custom-mood-trigger { border-color: #e2e8f0 !important; background-color: #fff !important; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+.custom-mood-trigger:hover,
+.custom-mood-trigger:focus { border-color: var(--primary-color) !important; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08) !important; transform: translateY(-1px); }
+/* Đảm bảo mũi tên dropdown căn giữa đẹp đẽ */
+.custom-mood-trigger::after { margin-left: 10px; color: var(--text-muted); }
+/* Tông màu vàng ấm áp riêng cho nút hoặc điểm nhấn trang Viết nhanh */
+.btn-warning { background-color: #FBBF24 !important; border-color: #FBBF24 !important; color: #1F2937 !important; }
+.btn-warning:hover { background-color: #F59E0B !important; }
+/* Hiệu ứng focus nhẹ riêng cho khung viết nhanh */
+.content-textarea { resize: none; }
+/* style.css (Thêm đoạn này xuống cuối) */
+.fs-7 { font-size: 0.85rem !important; /* Thu nhỏ cỡ chữ xem trước ở màn hình 4 cột cho đỡ ngợp */ }
+/* --- TRẠNG THÁI ACTIVE CHO NAVBAR & DROPDOWN --- */
+/* 1. Làm sáng chữ cho nút Dropdown lớn trên Navbar khi active */
+.navbar-nav .nav-link.active { color: var(--primary-color) !important; font-weight: 600 !important; }
+/* 2. Làm sáng mục con được chọn bên trong menu thả xuống */
+.dropdown-menu .dropdown-item.active, 
+.dropdown-menu .dropdown-item:active { background-color: var(--primary-color) !important; /* Màu xanh Indigo thương hiệu */
+    color: #ffffff !important; /* Chữ chuyển sang màu trắng */
+    font-weight: 600; }
+/* 3. Thêm icon tích nhỏ phía trước mục đang active (Tùy chọn - tạo điểm nhấn tinh tế) */
+.dropdown-menu .dropdown-item.active::after { content: " •"; font-size: 1.2rem; line-height: 0; vertical-align: middle; color: #fff; }
+/* --- TRẠNG THÁI ACTIVE ĐỒNG BỘ CHUẨN XANH DƯƠNG --- */
+/* 1. Làm sáng chữ cho nút Dropdown lớn trên Navbar khi active */
+.navbar-nav .nav-link.active { color: #0d6efd !important; /* Màu xanh dương chuẩn giống trong ảnh */
+    font-weight: 600 !important; }
+/* 2. Làm sáng mục con dropdown được chọn (Chỉ đổi màu chữ, không tô nền) */
+.dropdown-menu .dropdown-item.active, 
+.dropdown-menu .dropdown-item:active { background-color: transparent !important; /* Loại bỏ hoàn toàn màu nền đậm */
+    color: #0d6efd !important; /* Chuyển chữ sang màu xanh dương giống ảnh của bạn */
+    font-weight: 600 !important; /* Làm đậm chữ lên để tăng độ nhận diện */ }
+/* 3. Hiệu ứng hover nhẹ khi người dùng rê chuột qua mục đang active */
+.dropdown-menu .dropdown-item.active:hover { background-color: #f8f9fa !important; /* Nền xám cực nhẹ khi hover */
+    color: #0b5ed7 !important; /* Tông xanh dương đậm hơn một chút */ }

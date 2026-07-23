@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viết Nhanh Nhật Ký - DearDiary</title>
+
+    <!-- Nhúng Bootstrap CSS v5.3.8 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Nhúng font chữ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Liên kết file style.css nằm ở thư mục assets phía ngoài -->
+    <link rel="stylesheet" href="../assets/style.css" />
+  </head>
+  <body class="bg-light">
+    <!-- ================= NAVBAR BOOTSTRAP ĐỒNG BỘ 3 DROPDOWN ================= -->
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
+      <div class="container">
+        <!-- Brand Logo -->
+        <a class="navbar-brand logo fs-3" href="../index.html">DearDiary<span>.</span></a>
+
+        <!-- Nút Toggle khi thu nhỏ trên di động -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDiaryContent" aria-controls="navbarDiaryContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Các mục điều hướng chính -->
+        <div class="collapse navbar-collapse" id="navbarDiaryContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+            <!-- DROPDOWN 1: Dòng nhật ký -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle fw-medium px-3 text-secondary" href="#" id="diaryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="me-1">📖</span> Dòng nhật ký </a>
+              <ul class="dropdown-menu border-0 shadow-sm mt-2" aria-labelledby="diaryDropdown">
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="all_post.html"> <span class="me-2">📅</span> Tất cả bài viết </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="favorite_posts.html"> <span class="me-2">⭐</span> Bài viết yêu thích </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="secret_posts.html"> <span class="me-2">🔒</span> Nhật ký bí mật </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- DROPDOWN 2: Viết nhật ký (Đang Active) -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle fw-medium px-3 text-primary active" href="#" id="writeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="me-1">✍️</span> Viết nhật ký </a>
+              <ul class="dropdown-menu border-0 shadow-sm mt-2" aria-labelledby="writeDropdown">
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="write.html"> <span class="me-2">📝</span> Viết bài mới </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2 px-3 fw-bold text-primary" href="quick_write.html"> <span class="me-2">⚡</span> Viết nhanh (Short-note) </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="image_diary.html"> <span class="me-2">🖼️</span> Nhật ký hình ảnh </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- DROPDOWN 3: Lưu trữ bài viết -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle fw-medium px-3 text-secondary" href="#" id="archiveDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="me-1">🗂️</span> Lưu trữ bài viết </a>
+              <ul class="dropdown-menu border-0 shadow-sm mt-2" aria-labelledby="archiveDropdown">
+                <li class="dropdown-header text-uppercase font-monospace fs-7">Theo Thời Gian</li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="#"> <span class="me-2">🗓️</span> Tháng 7, 2026 </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="#"> <span class="me-2">🗓️</span> Tháng 6, 2026 </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li class="dropdown-header text-uppercase font-monospace fs-7">Theo Cảm Xúc</li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="#"> <span class="me-2">😊</span> Bài viết vui vẻ </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="#"> <span class="me-2">☕</span> Bài viết yên bình </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 px-3 fw-medium text-primary" href="#"> <span class="me-2">📁</span> Toàn bộ kho lưu trữ </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <div class="d-flex">
+            <a href="../index.html" class="btn btn-outline-secondary px-4 py-2 rounded-3 fw-medium"> Quay lại trang chủ </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ================= FORM VIẾT NHANH TỐI GIẢN ================= -->
+    <main class="container my-5" style="max-width: 700px">
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white position-relative overflow-hidden">
+        <!-- Điểm nhấn màu sắc tinh tế góc card -->
+        <div class="position-absolute top-0 start-0 w-100 bg-warning" style="height: 4px"></div>
+
+        <header class="mb-4 pb-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <div>
+            <h1 class="h3 font-serif fw-bold text-dark mb-1">Tâm tư chớp nhoáng ⚡</h1>
+            <p class="text-muted small mb-0">Ghi lại nhanh những dòng suy nghĩ lướt qua trong đầu</p>
+          </div>
+          <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill px-3 py-2 fs-7 fw-semibold">CHẾ ĐỘ VIẾT NHANH</span>
+        </header>
+
+        <form action="#" method="POST" id="quickDiaryForm">
+          <!-- 1. Chọn ngày & Chọn cảm xúc dạng Dropdown (Giữ nguyên đồng bộ) -->
+          <div class="row g-3 mb-4">
+            <!-- Ô Chọn ngày Custom -->
+            <div class="col-12 col-md-6 position-relative">
+              <label class="form-label fw-semibold text-secondary small">Ngày viết</label>
+
+              <div class="custom-date-trigger d-flex align-items-center gap-3 p-2.5 px-3 rounded-3 border bg-white" id="dateBtn">
+                <span class="fs-4 text-warning">📅</span>
+                <div class="d-flex flex-column text-start">
+                  <span class="text-muted fs-7 fw-semibold text-uppercase font-monospace">Ngày viết</span>
+                  <span id="friendlyDateText" class="fw-bold text-dark">Hôm nay, 16/07/2026</span>
+                </div>
+              </div>
+
+              <input type="hidden" id="diaryDate" name="diary_date" value="" />
+
+              <!-- Bảng lịch thả xuống -->
+              <div class="calendar-dropdown shadow border rounded-4 bg-white p-3 d-none" id="calendarDropdown">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <button type="button" class="btn btn-sm btn-light rounded-circle nav-cal-btn" id="prevMonthBtn">←</button>
+                  <h6 class="m-0 fw-bold text-dark font-serif" id="currentMonthYear">Tháng 07, 2026</h6>
+                  <button type="button" class="btn btn-sm btn-light rounded-circle nav-cal-btn" id="nextMonthBtn">→</button>
+                </div>
+                <div class="calendar-weekdays d-grid text-center text-muted fw-semibold mb-2">
+                  <div>T2</div>
+                  <div>T3</div>
+                  <div>T4</div>
+                  <div>T5</div>
+                  <div>T6</div>
+                  <div>T7</div>
+                  <div class="text-danger">CN</div>
+                </div>
+                <div class="calendar-days d-grid text-center" id="calendarDays">
+                  <!-- JS tự vẽ ngày -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Dropdown Chọn cảm xúc -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold text-secondary small">Cảm xúc hiện tại</label>
+              <div class="dropdown">
+                <button class="btn btn-white w-100 border text-start p-2.5 px-3 rounded-3 d-flex align-items-center justify-content-between dropdown-toggle custom-mood-trigger" type="button" id="moodDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="fs-4" id="currentMoodEmoji">😊</span>
+                    <div class="d-flex flex-column">
+                      <span class="text-muted fs-7 fw-semibold text-uppercase font-monospace">Tâm trạng</span>
+                      <span class="fw-bold text-dark" id="currentMoodText">Vui vẻ</span>
+                    </div>
+                  </div>
+                </button>
+
+                <input type="hidden" name="mood" id="selectedMood" value="😊 Vui vẻ" />
+
+                <ul class="dropdown-menu border-0 shadow-sm w-100 p-2 mt-2 rounded-3" aria-labelledby="moodDropdownBtn">
+                  <li>
+                    <button class="dropdown-item py-2 px-3 rounded-2 d-flex align-items-center gap-2 mood-option" type="button" data-emoji="😊" data-text="Vui vẻ"><span>😊</span> Vui vẻ</button>
+                  </li>
+                  <li>
+                    <button class="dropdown-item py-2 px-3 rounded-2 d-flex align-items-center gap-2 mood-option" type="button" data-emoji="☕" data-text="Yên bình"><span>☕</span> Yên bình</button>
+                  </li>
+                  <li>
+                    <button class="dropdown-item py-2 px-3 rounded-2 d-flex align-items-center gap-2 mood-option" type="button" data-emoji="💪" data-text="Quyết tâm"><span>💪</span> Quyết tâm</button>
+                  </li>
+                  <li>
+                    <button class="dropdown-item py-2 px-3 rounded-2 d-flex align-items-center gap-2 mood-option" type="button" data-emoji="🥳" data-text="Hào hứng"><span>🥳</span> Hào hứng</button>
+                  </li>
+                  <li><hr class="dropdown-divider mx-2" /></li>
+                  <li>
+                    <button class="dropdown-item py-2 px-3 rounded-2 d-flex align-items-center gap-2 mood-option" type="button" data-emoji="😢" data-text="Buồn bã"><span>😢</span> Buồn bã</button>
+                  </li>
+                  <li>
+                    <button class="dropdown-item py-2 px-3 rounded-2 d-flex align-items-center gap-2 mood-option" type="button" data-emoji="😴" data-text="Mệt mỏi"><span>😴</span> Mệt mỏi</button>
+                  </li>
+                  <li>
+                    <button class="dropdown-item py-2 px-3 rounded-2 d-flex align-items-center gap-2 mood-option" type="button" data-emoji="🤯" data-text="Áp lực"><span>🤯</span> Áp lực</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Vùng gõ suy nghĩ ngắn (Không tiêu đề) -->
+          <div class="mb-3 position-relative">
+            <textarea class="form-control border-0 px-0 fs-4 font-serif content-textarea" id="quickContent" rows="6" maxlength="500" placeholder="Lưu nhanh vài dòng suy nghĩ... (tối đa 500 ký tự)" required style="line-height: 1.6"></textarea>
+          </div>
+
+          <!-- 3. Bộ đếm ký tự nhỏ xinh -->
+          <div class="d-flex justify-content-end mb-4">
+            <span class="text-muted small" id="charCounter">0 / 500 ký tự</span>
+          </div>
+
+          <!-- 4. Thanh nút bấm -->
+          <div class="d-flex justify-content-end gap-3 border-top pt-4">
+            <a href="../index.html" class="btn btn-light px-4 py-2.5 rounded-3 fw-medium text-secondary">Hủy bỏ</a>
+            <button type="submit" class="btn btn-warning px-4 py-2.5 rounded-3 fw-medium text-dark shadow-sm">Lưu nhanh ⚡</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Nhúng Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ================= JAVASCRIPT ĐIỀU KHIỂN ================= -->
+    <script>
+      // --- 1. HỆ THỐNG XỬ LÝ LỊCH CUSTOM ---
+      const dateBtn = document.getElementById("dateBtn");
+      const calendarDropdown = document.getElementById("calendarDropdown");
+      const friendlyDateText = document.getElementById("friendlyDateText");
+      const diaryDateInput = document.getElementById("diaryDate");
+      const calendarDays = document.getElementById("calendarDays");
+      const currentMonthYear = document.getElementById("currentMonthYear");
+      const prevMonthBtn = document.getElementById("prevMonthBtn");
+      const nextMonthBtn = document.getElementById("nextMonthBtn");
+
+      let currentDate = new Date();
+      let selectedDate = new Date();
+      let viewDate = new Date();
+
+      function formatFriendlyDate(date) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const targetDate = new Date(date);
+        targetDate.setHours(0, 0, 0, 0);
+
+        const diffTime = targetDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        const day = String(targetDate.getDate()).padStart(2, "0");
+        const month = String(targetDate.getMonth() + 1).padStart(2, "0");
+        const year = targetDate.getFullYear();
+        const formatted = `${day}/${month}/${year}`;
+
+        if (diffDays === 0) return `Hôm nay, ${formatted}`;
+        if (diffDays === -1) return `Hôm qua, ${formatted}`;
+        if (diffDays === 1) return `Ngày mai, ${formatted}`;
+
+        const daysOfWeek = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+        return `${daysOfWeek[targetDate.getDay()]}, ${formatted}`;
+      }
+
+      function updateFormInputs(date) {
+        friendlyDateText.innerText = formatFriendlyDate(date);
+        diaryDateInput.value = date.toISOString().split("T")[0];
+      }
+
+      function renderCalendar() {
+        calendarDays.innerHTML = "";
+        const year = viewDate.getFullYear();
+        const month = viewDate.getMonth();
+
+        const vnMonths = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+        currentMonthYear.innerText = `Tháng ${vnMonths[month]}, ${year}`;
+
+        let firstDayIndex = new Date(year, month, 1).getDay();
+        firstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+        const totalDays = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDayIndex; i++) {
+          const emptyDiv = document.createElement("div");
+          emptyDiv.classList.add("calendar-day", "empty");
+          calendarDays.appendChild(emptyDiv);
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+          const dayDiv = document.createElement("div");
+          dayDiv.classList.add("calendar-day");
+          dayDiv.innerText = day;
+
+          const thisDate = new Date(year, month, day);
+
+          if (thisDate.toDateString() === selectedDate.toDateString()) {
+            dayDiv.classList.add("active");
+          }
+          if (thisDate.toDateString() === currentDate.toDateString()) {
+            dayDiv.classList.add("today");
+          }
+
+          dayDiv.addEventListener("click", function () {
+            selectedDate = new Date(year, month, day);
+            updateFormInputs(selectedDate);
+            renderCalendar();
+            calendarDropdown.classList.add("d-none");
+          });
+
+          calendarDays.appendChild(dayDiv);
+        }
+      }
+
+      updateFormInputs(selectedDate);
+      renderCalendar();
+
+      dateBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        calendarDropdown.classList.toggle("d-none");
+      });
+
+      document.addEventListener("click", function (e) {
+        if (!dateBtn.contains(e.target) && !calendarDropdown.contains(e.target)) {
+          calendarDropdown.classList.add("d-none");
+        }
+      });
+
+      prevMonthBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        viewDate.setMonth(viewDate.getMonth() - 1);
+        renderCalendar();
+      });
+
+      nextMonthBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        viewDate.setMonth(viewDate.getMonth() + 1);
+        renderCalendar();
+      });
+
+      // --- 2. HỆ THỐNG XỬ LÝ DROPDOWN CẢM XÚC (MOOD) ---
+      const moodOptions = document.querySelectorAll(".mood-option");
+      const currentMoodEmoji = document.getElementById("currentMoodEmoji");
+      const currentMoodText = document.getElementById("currentMoodText");
+      const selectedMoodInput = document.getElementById("selectedMood");
+
+      moodOptions.forEach((option) => {
+        option.addEventListener("click", function () {
+          const emoji = this.getAttribute("data-emoji");
+          const text = this.getAttribute("data-text");
+
+          currentMoodEmoji.innerText = emoji;
+          currentMoodText.innerText = text;
+          selectedMoodInput.value = `${emoji} ${text}`;
+        });
+      });
+
+      // --- 3. BỘ ĐẾM KÝ TỰ ---
+      const quickContent = document.getElementById("quickContent");
+      const charCounter = document.getElementById("charCounter");
+
+      quickContent.addEventListener("input", function () {
+        const currentLength = this.value.length;
+        charCounter.innerText = `${currentLength} / 500 ký tự`;
+
+        // Nếu sắp chạm giới hạn, đổi chữ sang màu đỏ cảnh báo nhẹ
+        if (currentLength >= 450) {
+          charCounter.classList.remove("text-muted");
+          charCounter.classList.add("text-danger", "fw-semibold");
+        } else {
+          charCounter.classList.remove("text-danger", "fw-semibold");
+          charCounter.classList.add("text-muted");
+        }
+      });
+
+      // Submit Form
+      document.getElementById("quickDiaryForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        alert(`Lưu nhanh thành công!\nNội dung: "${quickContent.value}"\nNgày: ${diaryDateInput.value}\nCảm xúc: ${selectedMoodInput.value}`);
+        window.location.href = "../index.html";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bài Viết Yêu Thích - DearDiary</title>
+
+    <!-- 1. Nhúng Bootstrap CSS v5.3.8 từ CDN chính thức -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Nhúng font chữ từ Google Fonts để giao diện mềm mại, dễ đọc -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Nhúng file CSS tùy biến (Đường dẫn tương đối chính xác từ write/ ra assets/) -->
+    <link rel="stylesheet" href="../assets/style.css" />
+
+    <style>
+      /* Thêm hiệu ứng chuyển động riêng cho nút Tim yêu thích */
+      .heart-btn {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 5px;
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 10; /* Đảm bảo nút tim luôn nằm trên lớp click của Card */
+      }
+      .heart-btn:hover {
+        transform: scale(1.25);
+      }
+      .heart-btn.active {
+        animation: heartBeat 0.3s ease-in-out;
+      }
+      @keyframes heartBeat {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.3);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <!-- 2. THANH ĐIỀU HƯỚNG HEADER -->
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3">
+      <div class="container">
+        <!-- Brand Logo -->
+        <a class="navbar-brand logo fs-3" href="../index.html">DearDiary<span>.</span></a>
+
+        <!-- Nút Toggle khi thu nhỏ trên màn hình Điện thoại -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDiaryContent" aria-controls="navbarDiaryContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Các mục điều hướng chính -->
+        <div class="collapse navbar-collapse" id="navbarDiaryContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+            <!-- DROPDOWN 1: Dòng nhật ký -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle fw-medium px-3 text-primary" href="#" id="diaryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="me-1">📖</span> Dòng nhật ký </a>
+              <ul class="dropdown-menu border-0 shadow-sm mt-2" aria-labelledby="diaryDropdown">
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="all_post.html"> <span class="me-2">📅</span> Tất cả bài viết </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2 px-3 fw-bold text-primary" href="favorite_posts.html"> <span class="me-2">⭐</span> Bài viết yêu thích </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="secret_posts.html"> <span class="me-2">🔒</span> Nhật ký bí mật </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- DROPDOWN 2: Viết nhật ký -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle fw-medium px-3 text-secondary" href="#" id="writeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="me-1">✍️</span> Viết nhật ký </a>
+              <ul class="dropdown-menu border-0 shadow-sm mt-2" aria-labelledby="writeDropdown">
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="write.html"> <span class="me-2">📝</span> Viết bài mới </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="quick_write.html"> <span class="me-2">⚡</span> Viết nhanh (Short-note) </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="image_diary.html"> <span class="me-2">🖼️</span> Nhật ký hình ảnh </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- DROPDOWN 3: Lưu trữ bài viết -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle fw-medium px-3 text-secondary" href="#" id="archiveDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="me-1">🗂️</span> Lưu trữ bài viết </a>
+              <ul class="dropdown-menu border-0 shadow-sm mt-2" aria-labelledby="archiveDropdown">
+                <li class="dropdown-header text-uppercase font-monospace fs-7">Theo Thời Gian</li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="#"> <span class="me-2">🗓️</span> Tháng 7, 2026 </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="#"> <span class="me-2">🗓️</span> Tháng 6, 2026 </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li class="dropdown-header text-uppercase font-monospace fs-7">Theo Cảm Xúc</li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="#"> <span class="me-2">😊</span> Bài viết vui vẻ </a>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2 px-3" href="#"> <span class="me-2">☕</span> Bài viết yên bình </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item py-2 px-3 fw-medium text-primary" href="#"> <span class="me-2">📁</span> Toàn bộ kho lưu trữ </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 3. BỐ CỤC NỘI DUNG CHÍNH -->
+    <main class="container my-5">
+      <header class="mb-5">
+        <h1 class="display-5 fw-bold font-serif text-dark d-flex align-items-center gap-2"><span>⭐</span> Nhật ký yêu thích</h1>
+        <p class="text-muted fs-5">Những dòng ký ức ý nghĩa được bạn đánh dấu và lưu giữ cẩn thận</p>
+      </header>
+
+      <!-- Danh sách bài viết yêu thích dạng Lưới (4 cột trên máy tính) -->
+      <section class="row g-4" id="diaryGrid">
+        <!-- Bài viết yêu thích 1 -->
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+          <article class="card h-100 border-0 shadow-sm diary-card rounded-4 p-4 position-relative">
+            <div class="card-meta d-flex justify-content-between align-items-center mb-3">
+              <span class="date text-muted small">16 Tháng 7, 2026</span>
+              <div class="d-flex align-items-center gap-2">
+                <span class="mood badge bg-light text-dark border rounded-pill px-2.5 py-1.5">😊 Vui vẻ</span>
+                <!-- Nút thả tim nhanh -->
+                <button type="button" class="heart-btn active" title="Bỏ yêu thích">❤️</button>
+              </div>
+            </div>
+            <h3 class="card-title h5 fw-bold font-serif mb-3 text-dark">Hôm nay bắt đầu dự án web nhật ký</h3>
+            <p class="card-preview text-muted flex-grow-1 mb-3">Cuối cùng thì mình cũng bắt tay vào thiết kế giao diện cho trang web nhật ký cá nhân. Quyết định làm phần Front-end trước cho thật ưng ý rồi mới tính đến kết nối cơ sở dữ liệu sau. Giao diện tối giản nhìn rất dễ chịu!</p>
+            <div class="card-footer border-top pt-3 bg-transparent">
+              <span class="btn-text text-primary fw-medium small">Đọc chi tiết →</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Bài viết yêu thích 2 -->
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+          <article class="card h-100 border-0 shadow-sm diary-card rounded-4 p-4 position-relative">
+            <div class="card-meta d-flex justify-content-between align-items-center mb-3">
+              <span class="date text-muted small">15 Tháng 7, 2026</span>
+              <div class="d-flex align-items-center gap-2">
+                <span class="mood badge bg-light text-dark border rounded-pill px-2.5 py-1.5">☕ Yên bình</span>
+                <button type="button" class="heart-btn active" title="Bỏ yêu thích">❤️</button>
+              </div>
+            </div>
+            <h3 class="card-title h5 fw-bold font-serif mb-3 text-dark">Một buổi chiều mưa bên tách cà phê</h3>
+            <p class="card-preview text-muted flex-grow-1 mb-3">Trời đổ mưa rào vào cuối chiều. Ngồi bên cửa sổ, nhâm nhi ly cà phê ấm và đọc nốt chương sách còn dang dở. Những lúc thế này mới thấy trân trọng những khoảng lặng tĩnh lặng sau những giờ code căng thẳng.</p>
+            <div class="card-footer border-top pt-3 bg-transparent">
+              <span class="btn-text text-primary fw-medium small">Đọc chi tiết →</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- 4. CỬA SỔ XEM NHANH (MODAL PREVIEW KIỂU FACEBOOK) -->
+    <div class="modal-overlay" id="diaryModal">
+      <div class="modal-content">
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+        <div class="modal-body" id="modalBody">
+          <!-- Nội dung chi tiết của bài viết -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Nhúng thư viện JS của Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- 6. ĐOẠN MÃ JAVASCRIPT ĐIỀU KHIỂN HOẠT ĐỘNG -->
+    <script>
+      const modal = document.getElementById("diaryModal");
+      const modalBody = document.getElementById("modalBody");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+
+      function openModal(title, date, mood, content) {
+        modalBody.innerHTML = `
+                <div class="modal-meta-row">
+                    <span class="modal-date">${date}</span>
+                    <span class="modal-mood">${mood}</span>
+                </div>
+                <h2 class="modal-title">${title}</h2>
+                <div class="modal-text">
+                    <p>${content}</p>
+                    <p class="modal-note"><em>💡 (Sau này khi kết nối PHP & MySQL, chúng ta sẽ gọi những dữ liệu được đánh dấu yêu thích (is_favorite = 1) hiển thị tại đây nhé!)</em></p>
+                </div>
+            `;
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        modal.classList.remove("show");
+        document.body.style.overflow = "";
+      }
+
+      // Xử lý click mở bài viết (Tránh xung đột khi click trúng nút Thả tim)
+      document.getElementById("diaryGrid").addEventListener("click", function (e) {
+        // Nếu người dùng click vào nút thả tim thì không mở bài viết
+        if (e.target.classList.contains("heart-btn")) {
+          e.stopPropagation();
+
+          // Xử lý đổi trạng thái Trái tim Đỏ <=> Trái tim Xám
+          const btn = e.target;
+          if (btn.classList.contains("active")) {
+            btn.classList.remove("active");
+            btn.innerText = "🤍"; // Trở về trạng thái chưa thích
+            btn.setAttribute("title", "Yêu thích");
+          } else {
+            btn.classList.add("active");
+            btn.innerText = "❤️"; // Trạng thái đã thích
+            btn.setAttribute("title", "Bỏ yêu thích");
+          }
+          return;
+        }
+
+        // Click vào vùng khác trên card thì mở bài viết đọc nhanh
+        const card = e.target.closest(".diary-card");
+        if (!card) return;
+
+        const title = card.querySelector(".card-title").innerText;
+        const date = card.querySelector(".date").innerText;
+        const mood = card.querySelector(".mood").innerText;
+        const previewText = card.querySelector(".card-preview").innerText;
+
+        openModal(title, date, mood, previewText);
+      });
+
+      closeModalBtn.addEventListener("click", closeModal);
+
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && modal.classList.contains("show")) {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>
