@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="vi">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Kho Lưu Trữ Bài Viết - DearDiary</title>
+
+      <!-- 1. Nhúng Bootstrap CSS v5.3.8 từ CDN chính thức -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+      <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
+      <link
+         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+         rel="stylesheet"
+      />
+
+      <!-- Nhúng file CSS tùy biến -->
+      <link rel="stylesheet" href="../assets/style.css" />
+
+      <style>
+         :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.6);
+         }
+
+         body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            min-height: 100vh;
+            overflow-x: hidden;
+         }
+
+         /* Đốm sáng bồng bềnh làm nền (Ambient Glow Orbs) */
+         .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: -1;
+            opacity: 0.45;
+            animation: floatOrb 12s infinite alternate ease-in-out;
+         }
+         .orb-1 {
+            width: 350px;
+            height: 350px;
+            background: #a855f7;
+            top: -50px;
+            left: -50px;
+         }
+         .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #38bdf8;
+            bottom: 50px;
+            right: -80px;
+            animation-delay: -5s;
+         }
+
+         @keyframes floatOrb {
+            0% {
+               transform: translate(0, 0) scale(1);
+            }
+            100% {
+               transform: translate(40px, 50px) scale(1.15);
+            }
+         }
+
+         /* Navbar Thủy Tinh (Glassmorphism Navbar) */
+         .navbar-glass {
+            background: rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+         }
+
+         .logo-brand {
+            font-family: "Playfair Display", serif;
+            background: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+         }
+
+         /* Dropdown Animation Bay Bổng */
+         @media (min-width: 992px) {
+            .navbar-nav .dropdown:hover .dropdown-menu {
+               opacity: 1;
+               visibility: visible;
+               transform: translateY(0) scale(1);
+               pointer-events: auto;
+            }
+            .dropdown-menu {
+               display: block;
+               opacity: 0;
+               visibility: hidden;
+               transform: translateY(12px) scale(0.95);
+               transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+               pointer-events: none;
+            }
+         }
+
+         .dropdown-menu {
+            border-radius: 20px !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+            padding: 10px !important;
+         }
+
+         .dropdown-item {
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-weight: 500;
+            color: #475569;
+            transition: all 0.2s ease;
+         }
+         .dropdown-item:hover {
+            background: rgba(99, 102, 241, 0.08) !important;
+            color: #6366f1 !important;
+            transform: translateX(6px);
+         }
+
+         .dropdown-toggle::after {
+            transition: transform 0.25s ease;
+            vertical-align: middle;
+         }
+         .dropdown:hover .dropdown-toggle::after,
+         .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(180deg);
+         }
+
+         /* Accordion Thủy Tinh (Glassmorphism Accordion) */
+         .archive-card-wrapper {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px !important;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.04);
+         }
+
+         .archive-accordion .accordion-item {
+            background: transparent !important;
+            border: 1px solid var(--glass-border) !important;
+            border-radius: 18px !important;
+            overflow: hidden;
+            margin-bottom: 1.2rem;
+         }
+
+         .archive-accordion .accordion-button {
+            background: rgba(255, 255, 255, 0.8) !important;
+            color: #1e293b !important;
+            font-family: "Playfair Display", serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            padding: 1.2rem 1.5rem;
+            box-shadow: none !important;
+         }
+
+         .archive-accordion .accordion-button:not(.collapsed) {
+            color: #6366f1 !important;
+            background: rgba(241, 245, 249, 0.9) !important;
+         }
+
+         /* Items trong từng mốc tháng */
+         .archive-post-item {
+            padding: 1rem 1.25rem;
+            border-radius: 14px;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+         }
+
+         .archive-post-item:hover {
+            background-color: #ffffff;
+            border-color: #6366f1;
+            transform: translateX(8px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
+         }
+
+         /* Tinh chỉnh Modal Glassmorphism */
+         .glass-modal .modal-content {
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border) !important;
+            border-radius: 28px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
+         }
+      </style>
+   </head>
+   <body>
+      <!-- Ambient Orbs -->
+      <div class="ambient-orb orb-1"></div>
+      <div class="ambient-orb orb-2"></div>
+
+      <!-- ================= NAVBAR THỦY TINH ================= -->
+      <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3">
+         <div class="container">
+            <!-- Brand Logo -->
+            <a class="navbar-brand logo-brand fs-2" href="../index.html">DearDiary<span>.</span></a>
+
+            <!-- Nút Toggle Mobile -->
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDiaryContent">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarDiaryContent">
+               <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-2">
+                  <!-- DROPDOWN 1: Dòng nhật ký -->
+                  <li class="nav-item dropdown">
+                     <a
+                        class="nav-link dropdown-toggle fw-semibold px-3 text-secondary"
+                        href="#"
+                        id="diaryDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                     >
+                        <span class="me-1">📖</span> Dòng nhật ký
+                     </a>
+                     <ul class="dropdown-menu border-0" aria-labelledby="diaryDropdown">
+                        <li>
+                           <a class="dropdown-item py-2 px-3" href="../write/all_post.html"> <span class="me-2">📅</span> Tất cả bài viết </a>
+                        </li>
+                        <li>
+                           <a class="dropdown-item py-2 px-3" href="../write/favorite_posts.html">
+                              <span class="me-2">⭐</span> Bài viết yêu thích
+                           </a>
+                        </li>
+                        <li><hr class="dropdown-divider my-1" /></li>
+                        <li>
+                           <a class="dropdown-item py-2 px-3" href="../write/secret_posts.html"> <span class="me-2">🔒</span> Nhật ký bí mật </a>
+                        </li>
+                     </ul>
+                  </li>
+
+                  <!-- DROPDOWN 2: Viết nhật ký -->
+                  <li class="nav-item dropdown">
+                     <a
+                        class="nav-link dropdown-toggle fw-semibold px-3 text-secondary"
+                        href="#"
+                        id="writeDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                     >
+                        <span class="me-1">✍️</span> Viết nhật ký
+                     </a>
+                     <ul class="dropdown-menu border-0" aria-labelledby="writeDropdown">
+                        <li>
+                           <a class="dropdown-item py-2 px-3" href="../write/post.html"> <span class="me-2">📝</span> Viết bài mới </a>
+                        </li>
+                        <li>
+                           <a class="dropdown-item py-2 px-3" href="../write/quick_post.html">
+                              <span class="me-2">⚡</span> Viết nhanh (Short-note)
+                           </a>
+                        </li>
+                        <li><hr class="dropdown-divider my-1" /></li>
+                        <li>
+                           <a class="dropdown-item py-2 px-3" href="../write/image_diary.html"> <span class="me-2">🖼️</span> Nhật ký hình ảnh </a>
+                        </li>
+                     </ul>
+                  </li>
+
+                  <!-- DROPDOWN 3: Lưu trữ bài viết (Đang Active) -->
+                  <li class="nav-item dropdown">
+                     <a
+                        class="nav-link dropdown-toggle fw-semibold px-3 text-primary active"
+                        href="#"
+                        id="archiveDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                     >
+                        <span class="me-1">🗂️</span> Lưu trữ bài viết
+                     </a>
+                     <ul class="dropdown-menu border-0" aria-labelledby="archiveDropdown">
+                        <li class="dropdown-header text-uppercase font-monospace fs-7 text-muted px-3 pt-2">Theo Thời Gian</li>
+                        <li>
+                           <a class="dropdown-item py-2 px-3" href="#archive-2026-07"> <span class="me-2">🗓️</span> Tháng 7, 2026 </a>
+                        </li>
+                        <li>
+                           <a class="dropdown-item py-2 px-3" href="#archive-2026-06"> <span class="me-2">🗓️</span> Tháng 6, 2026 </a>
+                        </li>
+                        <li><hr class="dropdown-divider my-1" /></li>
+                        <li>
+                           <a class="dropdown-item py-2 px-3 fw-bold text-primary active" href="archive_post.html">
+                              <span class="me-2">📁</span> Toàn bộ kho lưu trữ
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+
+               <div class="d-flex">
+                  <a href="../index.html" class="btn btn-outline-secondary px-4 py-2 rounded-3 fw-medium"> Quay lại trang chủ </a>
+               </div>
+            </div>
+         </div>
+      </nav>
+
+      <!-- ================= NỘI DUNG CHÍNH (KHO LƯU TRỮ) ================= -->
+      <main class="container my-5" style="max-width: 920px">
+         <!-- HEADER VÀ THANH LỌC THỜI GIAN DẠNG SELECT DROPDOWN -->
+         <div class="archive-card-wrapper p-4 p-md-5 mb-4">
+            <header class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+               <div>
+                  <h1 class="display-6 fw-bold font-serif text-dark mb-1 d-flex align-items-center gap-2"><span>🗂️</span> Kho Lưu Trữ Ký Ức</h1>
+                  <p class="text-muted small mb-0">Hệ thống phân mục và gom nhóm bài viết khoa học theo thời gian</p>
+               </div>
+
+               <!-- LỰA CHỌN SELECT DROPDOWN LỌC MỐC THỜI GIAN -->
+               <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted small fw-semibold text-nowrap">Đến mốc:</span>
+                  <select
+                     class="form-select border-0 bg-white rounded-3 fw-semibold shadow-sm text-primary"
+                     id="timeSelectFilter"
+                     style="min-width: 170px"
+                  >
+                     <option value="all" selected>Toàn bộ các năm</option>
+                     <option value="collapseJuly2026">Tháng 07, 2026</option>
+                     <option value="collapseJune2026">Tháng 06, 2026</option>
+                  </select>
+               </div>
+            </header>
+
+            <!-- DANH SÁCH ACCORDION SỔ XUỐNG -->
+            <div class="accordion archive-accordion" id="archiveTimeline">
+               <!-- MỐC THỜI GIAN 1: THÁNG 7, 2026 -->
+               <div class="accordion-item" id="archive-2026-07">
+                  <h2 class="accordion-header" id="headingJuly2026">
+                     <button
+                        class="accordion-button d-flex justify-content-between align-items-center"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseJuly2026"
+                     >
+                        <span class="d-flex align-items-center gap-2"> <span>🗓️</span> Tháng 07, 2026 </span>
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill fs-7 px-3 py-1 me-3"
+                           >3 Bài viết</span
+                        >
+                     </button>
+                  </h2>
+                  <div id="collapseJuly2026" class="accordion-collapse collapse show" data-bs-parent="#archiveTimeline">
+                     <div class="accordion-body p-3">
+                        <div class="d-flex flex-column gap-2.5">
+                           <div
+                              class="archive-post-item d-flex justify-content-between align-items-center"
+                              data-title="Hôm nay bắt đầu dự án web nhật ký"
+                              data-date="16/07/2026"
+                              data-mood="😊 Vui vẻ"
+                              data-content="Cuối cùng thì mình cũng bắt tay vào thiết kế giao diện cho trang web nhật ký cá nhân. Quyết định làm phần Front-end trước cho thật ưng ý..."
+                           >
+                              <div class="d-flex align-items-center gap-3">
+                                 <span class="badge bg-white text-muted border font-monospace">16/07</span>
+                                 <h6 class="mb-0 fw-semibold text-dark">Hôm nay bắt đầu dự án web nhật ký</h6>
+                              </div>
+                              <span class="badge bg-white text-dark border rounded-pill px-3 py-1.5 shadow-sm">😊 Vui vẻ</span>
+                           </div>
+
+                           <div
+                              class="archive-post-item d-flex justify-content-between align-items-center"
+                              data-title="Một buổi chiều mưa bên tách cà phê"
+                              data-date="15/07/2026"
+                              data-mood="☕ Yên bình"
+                              data-content="Trời đổ mưa rào vào cuối chiều. Ngồi bên cửa sổ, nhâm nhi ly cà phê ấm và đọc nốt chương sách còn dang dở..."
+                           >
+                              <div class="d-flex align-items-center gap-3">
+                                 <span class="badge bg-white text-muted border font-monospace">15/07</span>
+                                 <h6 class="mb-0 fw-semibold text-dark">Một buổi chiều mưa bên tách cà phê</h6>
+                              </div>
+                              <span class="badge bg-white text-dark border rounded-pill px-3 py-1.5 shadow-sm">☕ Yên bình</span>
+                           </div>
+
+                           <div
+                              class="archive-post-item d-flex justify-content-between align-items-center"
+                              data-title="Kế hoạch cải thiện bản thân"
+                              data-date="12/07/2026"
+                              data-mood="💪 Quyết tâm"
+                              data-content="Dạo này ngồi máy tính nhiều quá nên người hơi oải. Mình vừa lên lịch sẽ dành ra đúng 30 phút mỗi ngày..."
+                           >
+                              <div class="d-flex align-items-center gap-3">
+                                 <span class="badge bg-white text-muted border font-monospace">12/07</span>
+                                 <h6 class="mb-0 fw-semibold text-dark">Kế hoạch cải thiện bản thân</h6>
+                              </div>
+                              <span class="badge bg-white text-dark border rounded-pill px-3 py-1.5 shadow-sm">💪 Quyết tâm</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- MỐC THỜI GIAN 2: THÁNG 6, 2026 -->
+               <div class="accordion-item" id="archive-2026-06">
+                  <h2 class="accordion-header" id="headingJune2026">
+                     <button
+                        class="accordion-button collapsed d-flex justify-content-between align-items-center"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseJune2026"
+                     >
+                        <span class="d-flex align-items-center gap-2"> <span>🗓️</span> Tháng 06, 2026 </span>
+                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill fs-7 px-3 py-1 me-3"
+                           >2 Bài viết</span
+                        >
+                     </button>
+                  </h2>
+                  <div id="collapseJune2026" class="accordion-collapse collapse" data-bs-parent="#archiveTimeline">
+                     <div class="accordion-body p-3">
+                        <div class="d-flex flex-column gap-2.5">
+                           <div
+                              class="archive-post-item d-flex justify-content-between align-items-center"
+                              data-title="Chuyến du lịch Sa Pa cùng gia đình"
+                              data-date="28/06/2026"
+                              data-mood="🥳 Hào hứng"
+                              data-content="Gia đình mình vừa có một chuyến đi tuyệt vời đến Sa Pa. Không khí se lạnh mùa hè thật dễ chịu..."
+                           >
+                              <div class="d-flex align-items-center gap-3">
+                                 <span class="badge bg-white text-muted border font-monospace">28/06</span>
+                                 <h6 class="mb-0 fw-semibold text-dark">Chuyến du lịch Sa Pa cùng gia đình</h6>
+                              </div>
+                              <span class="badge bg-white text-dark border rounded-pill px-3 py-1.5 shadow-sm">🥳 Hào hứng</span>
+                           </div>
+
+                           <div
+                              class="archive-post-item d-flex justify-content-between align-items-center"
+                              data-title="Tổng kết mục tiêu nửa đầu năm 2026"
+                              data-date="15/06/2026"
+                              data-mood="☕ Yên bình"
+                              data-content="Nửa năm đã trôi qua thật nhanh. Nhìn lại những việc đã làm được và những mục tiêu chưa hoàn thành..."
+                           >
+                              <div class="d-flex align-items-center gap-3">
+                                 <span class="badge bg-white text-muted border font-monospace">15/06</span>
+                                 <h6 class="mb-0 fw-semibold text-dark">Tổng kết mục tiêu nửa đầu năm 2026</h6>
+                              </div>
+                              <span class="badge bg-white text-dark border rounded-pill px-3 py-1.5 shadow-sm">☕ Yên bình</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </main>
+
+      <!-- ================= BOX MODAL PREVIEW BỒNG BỀNH ================= -->
+      <div class="modal-overlay glass-modal" id="diaryModal">
+         <div class="modal-content border-0 p-4" style="max-width: 620px">
+            <button class="modal-close text-dark" id="closeModalBtn">&times;</button>
+            <div class="modal-body py-2" id="modalBody">
+               <div class="modal-meta-row mb-3 d-flex gap-3 text-muted small align-items-center">
+                  <span id="modalDate" class="font-monospace fw-semibold"></span>
+                  <span id="modalMood" class="badge bg-white text-dark border shadow-sm"></span>
+               </div>
+               <h2 class="modal-title text-dark font-serif fw-bold mb-3" id="modalTitle">Tiêu đề</h2>
+               <div class="modal-text fs-5 font-serif lh-lg text-secondary" id="modalText">
+                  <!-- Dữ liệu render tự động -->
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Nhúng JS Bootstrap -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+      <!-- ================= JAVASCRIPT XỬ LÝ DROPDOWN SELECT & MODAL ================= -->
+      <script>
+         const modal = document.getElementById("diaryModal");
+         const closeModalBtn = document.getElementById("closeModalBtn");
+         const modalDate = document.getElementById("modalDate");
+         const modalMood = document.getElementById("modalMood");
+         const modalTitle = document.getElementById("modalTitle");
+         const modalText = document.getElementById("modalText");
+
+         // 1. Xử lý Select Dropdown tự động xổ Accordion tương ứng
+         const timeSelectFilter = document.getElementById("timeSelectFilter");
+         timeSelectFilter.addEventListener("change", function () {
+            const targetId = this.value;
+            if (targetId === "all") return;
+
+            const targetCollapse = document.getElementById(targetId);
+            if (targetCollapse) {
+               const bsCollapse = new bootstrap.Collapse(targetCollapse, { toggle: true });
+               targetCollapse.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+         });
+
+         // 2. Xử lý Mở Box Modal xem nội dung chi tiết
+         document.querySelectorAll(".archive-post-item").forEach((item) => {
+            item.addEventListener("click", function () {
+               const title = this.getAttribute("data-title");
+               const date = this.getAttribute("data-date");
+               const mood = this.getAttribute("data-mood");
+               const content = this.getAttribute("data-content");
+
+               modalDate.innerText = date;
+               modalMood.innerText = mood;
+               modalTitle.innerText = title;
+               modalText.innerHTML = `<p>${content}</p><p class="text-muted fs-7 border-top pt-3 mt-4"><em>💡 (Nội dung bài viết đầy đủ sẽ tự động load từ Cơ sở dữ liệu MySQL)</em></p>`;
+
+               modal.classList.add("show");
+               document.body.style.overflow = "hidden";
+            });
+         });
+
+         function closeModal() {
+            modal.classList.remove("show");
+            document.body.style.overflow = "";
+         }
+
+         closeModalBtn.addEventListener("click", closeModal);
+         modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+         });
+         document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+         });
+      </script>
+   </body>
+</html>
